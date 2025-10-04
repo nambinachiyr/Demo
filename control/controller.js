@@ -1,4 +1,6 @@
 const DemoDB = require('../model/model');
+const sentEmail = require('../utiles/sentEmail');
+const User = require('../model/User_model')
 
 const controller = {
   getAll: async (req, res) => {
@@ -13,13 +15,24 @@ const controller = {
     try {
       console.log(req.body);
       const newPost = new DemoDB(req.body);
-      const savedPost = await await newPost.save();
+      const savedPost = await newPost.save();
       if (!savedPost) {
-        res.status(400).json({ message: 'Not Saved' });
+       return res.status(400).json({ message: 'Not Saved' });
       }
+ 
+      // Email notification
+      // Find that person who has logged in
+      const user = await User.findById(req.userId)
+      await sentEmail(
+        // In this place who is logged in that person have tis mail
+        // But that is must be Authendicated route
+        'itsm29101@gmail.com',//Instand user.email
+        'New Member is added',
+        `A new Member name is ${savedPost.name} has been created`
+      );
       res.status(201).json(savedPost);
     } catch (err) {
-      res.status(500).json({ message: 'Error to Create new Post' });
+      res.status(500).json({ message: 'Error to Create new Post' ,err:err.message});
     }
   },
   gteByID: async (req, res) => {

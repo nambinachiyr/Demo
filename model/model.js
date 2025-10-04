@@ -14,7 +14,7 @@ const demo_plan = new mongoose.Schema({
         required:true
     },
     password:{
-        type:Number,
+        type:String,
         required:true
     }
 })
