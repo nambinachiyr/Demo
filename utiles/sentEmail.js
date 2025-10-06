@@ -4,14 +4,14 @@ require('dotenv').config()
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: GOOGLE_APP_Email,
+    user: process.env.GOOGLE_APP_Email,
     pass: process.env.GOOGLE_APP_PW,
   },
 });
 
 const sentEmail = async(to,subject,text)=>{
     const mailOptions = {
-        from:GOOGLE_APP_Email,
+        from:process.env.GOOGLE_APP_Email,
         to,
         subject,
         text
